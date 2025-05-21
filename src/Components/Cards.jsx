@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getApiData } from '../Api/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../Features/cartSlice'
+import Loader from './Loader'
 
 const Cards = () => {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ const Cards = () => {
     }
   }
 
-  if (isPending) return <p className="text-center text-xl py-10">Loading...</p>
+  if (isPending) return <Loader />
   if (isError) return <p className="text-center text-red-600 font-semibold">Error: {error.message}</p>
 
   return (
