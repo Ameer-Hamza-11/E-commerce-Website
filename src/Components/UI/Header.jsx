@@ -9,15 +9,15 @@ import { signOut } from '../../Features/SignInSlice'
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
-  // const dispatch = useDispatch()
-  // const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const currentUser = useSelector(state => state.signIn.currentUser)
 
-    // const handleSignOut = () => {
-    //   dispatch(signOut())  // Redux me user logout karo
-    //   navigate('/signin')   // redirect to sign-in page (agar chaho)
-    // }
+    const handleSignOut = () => {
+      dispatch(signOut())  // Redux me user logout karo
+      navigate('/signin')   // redirect to sign-in page (agar chaho) 
+    }
 
   return (
     <>
@@ -48,13 +48,24 @@ const Header = () => {
               {/* <NavLink to={'/guest'} className='hidden md:block'><li>Guest</li></NavLink> */}
               <NavLink to={'/guest'}><li><FaCartShopping /></li></NavLink>
 
-              {!currentUser && (
+              {!currentUser ? (
                 <NavLink to={'/signin'}>
                   <li className='bg-white text-violet-500 py-2 px-4 rounded-3xl border-2 border-violet-600 hover:bg-violet-500 hover:text-white duration-300'>
                     Sign In
                   </li>
                 </NavLink>
-              )}
+              )
+            :
+            (
+              <NavLink to={'/signin'}>
+              <li className='bg-white text-violet-500 py-2 px-4 rounded-3xl border-2 border-violet-600 hover:bg-violet-500 hover:text-white duration-300 '
+              onClick={handleSignOut}
+              >
+                Sign Out
+              </li>
+            </NavLink>
+            )
+            }
 
             </ul>
           </div>

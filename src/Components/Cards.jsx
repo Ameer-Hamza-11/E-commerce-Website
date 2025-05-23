@@ -1,29 +1,60 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getApiData } from '../Api/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../Features/cartSlice'
 import Loader from './Loader'
+import { useCookies } from 'react-cookie'
 
 const Cards = () => {
   const dispatch = useDispatch()
   const cartItems = useSelector(state => state.cart)
+  const [cookies, setCookie] = useCookies(['carts'])
+
+
+  const getParsedCookie = () => {
+    try {
+      const raw = cookies.carts
+      if (typeof raw === 'string') {
+        return JSON.parse(raw)
+      } else if (Array.isArray(raw)) {
+        return raw
+      } else if (typeof raw === 'object') {
+        return [raw]
+      }
+      return []
+    } catch (error) {
+      console.log('Invalid cookie format:', error);
+      return [];
+    }
+  }
+
+  const isInCart = (id) => cartItems.some(item => item.id === id)
+
+  const handleCartToggle = (product) => {
+    const existingCart = getParsedCookie()
+
+    if (isInCart(product.id)) {
+      dispatch(removeFromCart(product.id))
+      const updatedCart = existingCart.filter((item) => item.id !== product.id)
+      setCookie('carts', JSON.stringify(updatedCart), { path: '/', maxAge: 86400 })
+    } else {
+      dispatch(addToCart(product))
+      const updatedCart = [...existingCart, product]
+      setCookie('carts', JSON.stringify(updatedCart), { path: '/', maxAge: 86400 })
+    }
+  }
+
+  useEffect(() => {
+    console.log('Current Cookie (raw):', cookies.carts);
+  }, [cookies.carts])
+
+
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['products'],
     queryFn: getApiData,
   })
-
-  const isInCart = (id) => cartItems.some(item => item.id === id)
-
-  const handleCartToggle = (product) => {
-    if (isInCart(product.id)) {
-      dispatch(removeFromCart(product.id))
-    } else {
-      dispatch(addToCart(product))
-    }
-  }
-
   if (isPending) return <Loader />
   if (isError) return <p className="text-center text-red-600 font-semibold">Error: {error.message}</p>
 

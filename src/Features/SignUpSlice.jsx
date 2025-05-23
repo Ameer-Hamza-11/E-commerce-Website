@@ -10,8 +10,11 @@ const SignUpSlice = createSlice({
     addSignUp: (state, action) => {
       state.users.push(action.payload); // new user add karo
     },
+    setUsers: (state, action) => {
+      state.users = [action.payload];
+    }
   },
 });
 
-export const { addSignUp } = SignUpSlice.actions;
+export const { addSignUp,setUsers } = SignUpSlice.actions;
 export default SignUpSlice.reducer;

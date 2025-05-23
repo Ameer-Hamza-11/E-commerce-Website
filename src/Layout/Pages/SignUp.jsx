@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { addSignUp } from '../../Features/SignUpSlice'
+import { useCookies } from 'react-cookie'
+
 
 const SignUp = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [cookies, setCookie, removeCookie] = useCookies(['users'])
 
   const [formData, setFormData] = useState({
     name: '',
@@ -25,11 +28,44 @@ const SignUp = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault()
+
+    const { name, email, password } = formData;
+
+    if (!name || !email || !password) {
+      alert('please fill all the fields')
+      return
+    }
+
+    setCookie('users', JSON.stringify({ name, email, password }), { path: '/', maxAge: 86400 })
+
     dispatch(addSignUp(formData))
+
     setFormData({ name: '', email: '', password: '' })
-    setIsSubmitted(true) 
-    console.log('Form submitted:', formData)
+
+    setIsSubmitted(true)
+    // console.log('Form submitted:', formData)
   }
+
+  useEffect(() => {
+    if (cookies.users && typeof cookies.users === 'string' && cookies.users.startsWith('[object')) {
+      removeCookie('users', { path: '/' })
+      console.warn('Invalid cookie removed');
+    }
+  }, [])
+  useEffect(()=>{
+    if (!cookies.users) return;
+
+    try {
+      const parsed = typeof cookies.users === 'string' 
+      ? JSON.parse(cookies.users) : cookies.users
+      console.log('parsed cookie:', parsed);
+      
+    } catch (error) {
+      console.log('Invalid cookie format, removing:', error);
+      removeCookie('users', { path: '/' });
+    }
+  },[cookies.users])
+
 
 
   useEffect(() => {
