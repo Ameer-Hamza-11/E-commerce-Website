@@ -6,10 +6,8 @@ const CartsSection = () => {
   const cartItems = useSelector(state => state.cart)
   const dispatch = useDispatch()
 
-  // Calculate total price
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0)
 
-  // Helper: render rating stars filled based on rating (out of 5)
   const renderStars = (rating) => {
     const stars = []
     const fullStars = Math.floor(rating)
@@ -35,7 +33,7 @@ const CartsSection = () => {
   }
 
   return (
-    <div className="p-8 min-h-screen bg-gradient-to-br from-purple-50 to-violet-100 font-[Montserrat]">
+    <div className="p-4 sm:p-8 min-h-screen bg-gradient-to-br from-purple-50 to-violet-100 font-[Montserrat]">
       <h2 className="text-3xl font-bold text-center text-violet-700 mb-10">
         🛒 Your Cart
       </h2>
@@ -64,41 +62,38 @@ const CartsSection = () => {
             {cartItems.map(item => (
               <div
                 key={item.id}
-                className="bg-white/90 backdrop-blur-md border border-purple-300 rounded-3xl p-5 shadow-lg flex items-center gap-6 hover:shadow-2xl transition duration-300"
+                className="bg-white/90 backdrop-blur-md border border-purple-300 rounded-3xl p-5 shadow-lg flex flex-col sm:flex-row items-center sm:items-start gap-6 hover:shadow-2xl transition duration-300"
               >
                 {/* Image */}
                 <img
                   src={item.thumbnail}
                   alt={item.title}
-                  className="h-28 w-28 object-contain rounded-lg border border-purple-200"
+                  className="h-24 w-24 sm:h-28 sm:w-28 object-contain rounded-lg border border-purple-200"
                 />
 
                 {/* Info */}
-                <div className="flex-1 flex flex-col gap-1">
-                  <h3 className="text-xl font-bold text-violet-900 line-clamp-1">
-                    {item.title}
-                  </h3>
+                <div className="flex-1 flex flex-col gap-1 text-center sm:text-left">
+                  <h3 className="text-xl font-bold text-violet-900 line-clamp-1">{item.title}</h3>
                   <p className="text-purple-700 text-sm line-clamp-2">{item.description}</p>
 
-                  {/* Category & Quantity */}
-                  <div className="flex items-center gap-4 mt-2">
-                    <span className="text-purple-600 font-semibold text-sm uppercase tracking-wide bg-purple-100 px-3 py-1 rounded-full select-none">
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-3 mt-2">
+                    <span className="text-purple-600 font-semibold text-xs uppercase bg-purple-100 px-3 py-1 rounded-full">
                       {item.category || 'General'}
                     </span>
-                    <span className="text-purple-700 font-semibold text-sm bg-purple-200 px-3 py-1 rounded-full select-none">
+                    <span className="text-purple-700 font-semibold text-xs bg-purple-200 px-3 py-1 rounded-full">
                       Qty: 1
                     </span>
                   </div>
 
-                  {/* Rating with stars */}
-                  <div className="flex items-center mt-3 gap-2">
+                  {/* Rating */}
+                  <div className="flex items-center justify-center sm:justify-start gap-2 mt-3">
                     <div className="flex">{renderStars(item.rating || 4)}</div>
                     <span className="text-purple-700 font-semibold text-sm">
                       {item.rating ? item.rating.toFixed(1) : '4.0'} / 5.0
                     </span>
                   </div>
 
-                  {/* Progress bar for rating */}
+                  {/* Progress bar */}
                   <div className="w-full bg-purple-200 rounded-full h-2 mt-2">
                     <div
                       className="bg-violet-600 h-2 rounded-full"
@@ -108,7 +103,7 @@ const CartsSection = () => {
                 </div>
 
                 {/* Price & Remove */}
-                <div className="flex flex-col items-end gap-4">
+                <div className="flex flex-col items-center sm:items-end gap-4 mt-4 sm:mt-0">
                   <p className="text-2xl font-extrabold text-violet-900">
                     $ <span className="text-green-600">{item.price.toFixed(2)}</span>
                   </p>
@@ -125,8 +120,8 @@ const CartsSection = () => {
             ))}
           </div>
 
-          {/* Total Price Summary */}
-          <div className="max-w-5xl mx-auto mt-10 p-6 bg-purple-100 rounded-xl shadow-inner text-right text-xl font-bold text-violet-900">
+          {/* Total Summary */}
+          <div className="max-w-5xl mx-auto mt-10 p-6 bg-purple-100 rounded-xl shadow-inner text-center sm:text-right text-xl font-bold text-violet-900">
             Total: $ <span className="text-green-700">{totalPrice.toFixed(2)}</span>
           </div>
         </>
