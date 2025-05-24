@@ -24,7 +24,7 @@ const Header = () => {
       <nav className='bg-violet-500 text-white font-[Montserrat] p-4 flex justify-between items-center'>
         <div className='container max-w-[1280px] mx-auto flex justify-between items-center px-[clamp(16px,5vw,96px)] py-[clamp(8px,v1w,20px)]'>
           <div className="text-2xl flex items-center gap-2 font-bold">
-            <h1 className='text-3xl font-bold'>HamzCart </h1>
+            <h1 className='md:text-3xl text-[16px] font-bold'>HamzCart </h1>
           </div>
           <div className='hidden md:block '>
             <ul className='flex gap-6 font-bold items-center'>
@@ -44,13 +44,13 @@ const Header = () => {
             </ul>
           </div>
           <div>
-            <ul className='font-bold flex gap-6 items-center'>
+            <ul className='font-bold flex gap-2 md:gap-4 items-center'>
               {/* <NavLink to={'/guest'} className='hidden md:block'><li>Guest</li></NavLink> */}
               <NavLink to={'/guest'}><li><FaCartShopping /></li></NavLink>
 
               {!currentUser ? (
                 <NavLink to={'/signin'}>
-                  <li className='bg-white text-violet-500 py-2 px-4 rounded-3xl border-2 border-violet-600 hover:bg-violet-500 hover:text-white duration-300'>
+                  <li className='bg-white  text-violet-500 md:py-2 md:px-4 py-1 px-2 rounded-3xl border-2 border-violet-600 hover:bg-violet-500 hover:text-white duration-300'>
                     Sign In
                   </li>
                 </NavLink>
@@ -58,7 +58,7 @@ const Header = () => {
             :
             (
               <NavLink to={'/signin'}>
-              <li className='bg-white text-violet-500 py-2 px-4 rounded-3xl border-2 border-violet-600 hover:bg-violet-500 hover:text-white duration-300 '
+              <li className='bg-white text-violet-500 md:py-2 md:px-4 py-1 px-3 rounded-3xl border-2 border-violet-600 hover:bg-violet-500 hover:text-white duration-300 '
               onClick={handleSignOut}
               >
                 Sign Out
